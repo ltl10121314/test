@@ -1,4 +1,4 @@
-package com.dataStructureExercises.stack;
+package com.datastructureexercises.stack;
 
 import org.junit.Test;
 import org.quartz.TriggerUtils;

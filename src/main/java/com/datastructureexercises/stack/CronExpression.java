@@ -1,4 +1,4 @@
-package com.dataStructureExercises.stack;
+package com.datastructureexercises.stack;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
