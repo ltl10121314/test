@@ -10,5 +10,6 @@ public class ArrayListTest {
         ArrayList<String> strings = new ArrayList<String>();
         strings.add("hahah");
         System.out.println(strings.get(0).getClass().getName());
+
     }
 }
