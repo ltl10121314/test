@@ -1,13 +1,17 @@
 package com.datastructureexercises.list;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.logging.Logger;
 
+/**
+ * @author Administrator
+ */
 public class ArrayListTest {
+    Logger logger = Logger.getGlobal();
     @Test
     public void arrayListTest() {
         ArrayList<String> strings = new ArrayList<String>();
@@ -40,5 +44,20 @@ public class ArrayListTest {
             Integer value = entry.getValue();
             System.out.println(key + "=" + value);
         }
+    }
+
+    @Test
+    public void threadTest() {
+        logger.info(Thread.currentThread().getStackTrace()[1].getMethodName());
+        String oid = UUID.randomUUID().toString().replace("-", "");
+        logger.info(oid);
+        String message = "";
+        logger.info(String.valueOf(StringUtils.isBlank(message)));
+        BigDecimal bigDecimal = new BigDecimal(0);
+        System.out.println(bigDecimal.toString());
+        ArrayList<Object> objects = new ArrayList<>();
+        objects.size();
+        String[] aa = {};
+        System.out.println(aa.length);
     }
 }
