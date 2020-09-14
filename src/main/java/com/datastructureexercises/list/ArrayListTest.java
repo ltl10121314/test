@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * @author Administrator
@@ -60,4 +61,12 @@ public class ArrayListTest {
         String[] aa = {};
         System.out.println(aa.length);
     }
+    public static void main(String args[]) {
+        String str = "02";
+        String pattern1 = ".*[,-].*";
+        String pattern2 = ".*/0*";
+        boolean b = Pattern.matches(".*/0*", str) || Pattern.matches(".*[,-].*", str);
+        System.out.println(b);
+    }
+
 }
