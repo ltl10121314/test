@@ -23,6 +23,7 @@
     <modules>
         <module>rmi-server</module>
         <module>exercises</module>
+        <module>rmi-client</module>
     </modules>
 
     <dependencies>
