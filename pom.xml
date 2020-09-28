@@ -6,6 +6,7 @@
 
     <groupId>com.dataStructureExercises</groupId>
     <artifactId>data-structure-exercises</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -19,6 +20,10 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>rmi-server</module>
+        <module>exercises</module>
+    </modules>
 
     <dependencies>
         <dependency>
