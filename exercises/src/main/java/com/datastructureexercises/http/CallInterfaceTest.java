@@ -2,12 +2,14 @@ package com.datastructureexercises.http;
 
 import org.junit.Test;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
@@ -18,20 +20,78 @@ import java.util.Map;
  */
 public class CallInterfaceTest {
     /**
+     * 设置 https 请求
+     *
+     * @throws Exception 抛出异常
+     */
+    public static void trustAllHttpsCertificates() throws Exception {
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String str, SSLSession session) {
+                return true;
+            }
+        });
+        javax.net.ssl.TrustManager[] trustAllCerts = new javax.net.ssl.TrustManager[1];
+        javax.net.ssl.TrustManager tm = new MITM();
+        trustAllCerts[0] = tm;
+        javax.net.ssl.SSLContext sc = javax.net.ssl.SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, null);
+        javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+    }
+
+    /**
+     * 设置 https 请求证书
+     */
+    static class MITM implements javax.net.ssl.TrustManager, javax.net.ssl.X509TrustManager {
+        @Override
+        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
+
+        public boolean isServerTrusted(
+                java.security.cert.X509Certificate[] certs) {
+            return true;
+        }
+
+        public boolean isClientTrusted(
+                java.security.cert.X509Certificate[] certs) {
+            return true;
+        }
+
+        @Override
+        public void checkServerTrusted(
+                java.security.cert.X509Certificate[] certs, String authType)
+                throws java.security.cert.CertificateException {
+            return;
+        }
+
+        @Override
+        public void checkClientTrusted(
+                java.security.cert.X509Certificate[] certs, String authType)
+                throws java.security.cert.CertificateException {
+            return;
+        }
+
+
+    }
+
+    /**
      * 向指定URL发送GET方法的请求
      *
      * @param url   发送请求的URL
      * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return URL 所代表远程资源的响应结果
      */
-    public static String doGet(String url, String param) {
+    public static String sendGet(String url, String param) {
         String result = "";
         BufferedReader in = null;
         try {
             String urlNameString = url + "?" + param;
             URL realUrl = new URL(urlNameString);
+            //ssl
+            trustAllHttpsCertificates();
             // 打开和URL之间的连接
-            URLConnection connection = realUrl.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
             // 设置通用的请求属性
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
@@ -68,17 +128,6 @@ public class CallInterfaceTest {
         return result;
     }
 
-    @Test
-    public void doGet() throws Exception {
-        String address = "http://172.16.26.54:8700/rest/dig-buw-monitor/workflows/configuration/getStatusConfiguration";
-        String param = "";
-        int count = 1000;
-        for (int i = 0; i < count; i++) {
-            String result = doGet(address, param);
-            System.out.println("第" + (i + 1) + "次调用:" + result);
-        }
-    }
-
     /**
      * post请求
      *
@@ -86,9 +135,10 @@ public class CallInterfaceTest {
      * @return 返回值
      * @throws Exception 返回异常
      */
-    public static String doPost(String address, String json) throws Exception {
+    public static String sendPost(String address, String json) throws Exception {
         //创建URL对象,设置请求url
         URL url = new URL(address);
+        trustAllHttpsCertificates();
         //调用URL对象的openConnection( )来获取HttpURLConnection对象实例
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         //请求方法为POST
@@ -126,7 +176,33 @@ public class CallInterfaceTest {
     }
 
     @Test
-    public void doPostTest() throws Exception {
+    public void sedGetHttpTest() throws Exception {
+        String address = "http://172.16.26.54:8700/rest/dig-buw-monitor/workflows/configuration/getStatusConfiguration";
+        String param = "";
+        int count = 1;
+        for (int i = 0; i < count; i++) {
+            String result = sendGet(address, param);
+            System.out.println("第" + (i + 1) + "次调用:" + result);
+        }
+    }
+
+
+    @Test
+    public void sedGetHttpsTest() throws Exception {
+//        String address = "https://172.16.26.46:9444/rest/dig-buw-monitor/workflows/configuration/getStatusConfiguration";
+//        String address = "https://www.ahdataex.com/portal/pure/SaveTenant!SaveTenant.action";
+//        String address= "https://blog.csdn.net/weixin_34092370/article/details/91853603";
+        String address= "https://www.baidu.com";
+        String param = "";
+        int count = 1000;
+        for (int i = 0; i < count; i++) {
+            String result = sendGet(address, param);
+            System.out.println("第" + (i + 1) + "次调用:" + result);
+        }
+    }
+
+    @Test
+    public void sendPostHttpTest() throws Exception {
         //请求地址
         String address = "http://172.16.26.54:8700/rest/dig-buw-manager/taskServiceForRest/getTaskDefineForExecutor";
         //将对象转换为json，然后发送；
@@ -141,7 +217,28 @@ public class CallInterfaceTest {
         String result = "";
         int count = 1000;
         for (int i = 0; i < count; i++) {
-            result = doPost(address, json);
+            result = sendPost(address, json);
+            System.out.println("第" + (i + 1) + "次调用：" + result);
+        }
+    }
+
+    @Test
+    public void sendPostHttpsTest() throws Exception {
+        //请求地址
+        String address = "http://172.16.11.151:8207/dig-dp/taskServiceForRest/getTaskDefineForExecutor";
+        //将对象转换为json，然后发送；
+        String json = "{\n" +
+                "  \"objectInfo\": {\n" +
+                "    \"nodeKey\": \"d63975e2c2f543aaac8e1bebb7eaac48\",\n" +
+                "    \"taskType\": \"m3221\",\n" +
+                "    \"tenantId\": \"cs\"\n" +
+                "  },\n" +
+                "  \"token\":1\n" +
+                "}";
+        String result = "";
+        int count = 5000;
+        for (int i = 0; i < count; i++) {
+            result = sendPost(address, json);
             System.out.println("第" + (i + 1) + "次调用：" + result);
         }
     }

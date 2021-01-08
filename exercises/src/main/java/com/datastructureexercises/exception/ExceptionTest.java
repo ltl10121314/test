@@ -2,16 +2,20 @@ package com.datastructureexercises.exception;
 
 import com.jcraft.jsch.ChannelSftp;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * @author Administrator
  */
 public class ExceptionTest {
     ChannelSftp sftp = null;
+    private Logger logger = LoggerFactory.getLogger(ExceptionTest.class);
 
     @Test
     public void exception1Test() {
@@ -29,6 +33,19 @@ public class ExceptionTest {
             sftp.put(fileInputStream, "hello.txt");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void exceptionTest() {
+        try {
+            int a = 1 / 0;
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//            System.out.println("==========");
+//            System.out.println(e.getLocalizedMessage());
         }
     }
 }

@@ -61,6 +61,13 @@ public class ArrayListTest {
         String[] aa = {};
         System.out.println(aa.length);
     }
+    @Test
+    public void test1(){
+        ArrayList<Object> objects = new ArrayList<>();
+        objects = new ArrayList<Object>();
+        objects.add("sadfa");
+        System.out.println(objects);
+    }
     public static void main(String args[]) {
         String str = "02";
         String pattern1 = ".*[,-].*";
