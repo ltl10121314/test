@@ -1,48 +1,40 @@
 package com.datastructureexercises.test;
 
-import org.apache.commons.net.util.Base64;
-import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Exercise {
-    @Test
-    public void heTest() throws UnsupportedEncodingException {
-//        System.out.println(Integer.parseInt("".toString()));
-//        System.out.println(String.valueOf(UUID.randomUUID()).replaceAll("-", "").toUpperCase());
-//        try {
-//            System.out.println("hello");
-//        } catch (Exception E) {
-//            throw new Exception();
-//        }
-//        throw new Exception();
-//        String a = "Base64#NXJwcm94eQ==".substring(7);
-//        System.out.println(a);
-//        String s1 = new String(Base64.decodeBase64(a.getBytes()), StandardCharsets.UTF_8);
-//        System.out.println(s1);
+    public static void main(String[] args) {
+        String txdate = getTxdate("20200109", "shjs", "gjs");
+        System.out.println(txdate);
+    }
+    public static String getTxdate(String dates, String jys, String ofi) {
+        ArrayList hlist = new ArrayList();
+        hlist.add("shjs");
+        hlist.add("gjs");
+        int hlisindex = hlist.indexOf(jys);
+        String[] timesa = { "20200109:1,1", "20200110:1,0", "20200111:0,1",
+                "20200112:1,1", "20200113:1,1"};
+        String dateout = "99999999";
+        int ii = 0;
+        int find = 0;
+        for(String str : timesa) {
+            String[] parts = str.split(":");
+            String ifjy = parts[1].split(",")[hlisindex];
+            if ( parts[0].equals(dates) ) {
+                find = 1;
+            }
 
-        String b1 = "Base64#MTQ5Mzg1MA==".substring(7);
-        String s1 = new String(Base64.decodeBase64(b1.getBytes()), StandardCharsets.UTF_8);
-        System.out.println(b1);
-        System.out.println(s1);
-        String s2 = new String(Base64.encodeBase64(s1.getBytes()), StandardCharsets.UTF_8);
-        System.out.println(s2);
+            if (find == 1 && ifjy.equals("1") )
+            {
+                if (Integer.toString(ii).equals(ofi)){
+                    dateout = parts[0];
+                    break;
+                }
+                ii += 1 ;
+            }
+        }
+        return dateout;
     }
-    @Test
-    public void hehetest(){
-        String string = "E201040004:流程编码重复[流程映射节点测试01]!";
-        int test = string.indexOf("流程编码重复");
-        System.out.println(test);
-        String idInfo = string.substring(string.indexOf("[")+1,string.indexOf("]"));
-        System.out.println(idInfo);
-    }
-    @Test
-    public void hhhtest(){
-        String str = "asdfa(asdfa(sdafa(";
-        String ss = str.replaceFirst("\\(", "我的");
-        System.out.println(ss);
-    }
+
 }
