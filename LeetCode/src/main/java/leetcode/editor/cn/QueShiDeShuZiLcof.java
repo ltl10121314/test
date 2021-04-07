@@ -42,21 +42,11 @@ public class QueShiDeShuZiLcof {
     class Solution {
         public int missingNumber(int[] nums) {
             //first way
-           /* int a = 0, i = 0;
-            for (i=0; i<nums.length;i++){
-                a = a^i^nums[i];
+            int a = 0, i = 0;
+            for (i = 0; i < nums.length; i++) {
+                a = a ^ i ^ nums[i];
             }
-            return a^i;*/
-            //second way
-//            Arrays.sort(nums);
-            int low = 0;
-            int high = nums.length;
-            while (low < high) {
-                int mid = (low + high) / 2;
-                if (nums[mid] > mid) high = mid;
-                else low = mid + 1;
-            }
-            return low;
+            return a ^ i;
         }
     }
 }
