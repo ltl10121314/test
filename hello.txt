@@ -1,4 +1,4 @@
 hello world
-first commit hehe
+first commit
 second commit
 third commit
